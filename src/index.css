@@ -27,6 +27,12 @@ body {
   color: #020617;
 }
 
+@layer base {
+  body {
+    @apply font-sans;
+  }
+}
+
 a {
   color: inherit;
   text-decoration: none;

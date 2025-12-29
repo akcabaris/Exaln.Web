@@ -20,14 +20,23 @@ const App: React.FC = () => {
 
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<SignUpPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
 
-        <Route element={<ProtectedRoute />}>
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<HomePage />} />
+        </Route>
+        <Route>
+
+        </Route>
+
+        {/*
+                <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
             <Route path="/" element={<HomePage />} />
           </Route>
         </Route>
-
+        
+        */}
         {/* 404 */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

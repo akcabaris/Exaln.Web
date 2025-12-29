@@ -1,4 +1,3 @@
-// tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -8,11 +7,10 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
+        sans: ['Helvetica', 'Arial', 'ui-sans-serif', 'system-ui'],
         heading: ["Poppins", "system-ui", "sans-serif"],
       },
       fontSize: {
-        // ~%10 civarı büyütülmüş hâlleri
         xs: ["0.8rem", { lineHeight: "1.1rem" }],
         sm: ["0.9rem", { lineHeight: "1.3rem" }],
         base: ["1.05rem", { lineHeight: "1.6rem" }],

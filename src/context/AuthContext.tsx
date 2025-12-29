@@ -63,15 +63,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const logout = async () => {
-        try {
-            await logoutApi();
-        } catch (_) { }
-
         localStorage.removeItem("accessToken");
         localStorage.removeItem("user");
 
         setAccessToken(null);
         setUser(null);
+
+        try {
+            await logoutApi();
+        } catch (_) { }
     };
 
     return (
