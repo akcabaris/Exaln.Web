@@ -1,7 +1,8 @@
-import React from 'react';
-import SideBarLink from './SideBarLink';
+import React, { useState } from 'react';
+import SideBarItem from './SideBarItem';
 import { useAuth } from '../context/AuthContext';
 import { FaRegUserCircle } from "react-icons/fa";
+import { LuChevronDown, LuChevronUp } from "react-icons/lu";
 
 interface SidebarProps {
     isOpen: boolean;
@@ -11,6 +12,14 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
     const { isAuthenticated, logout, user } = useAuth();
+
+    const [isIELTSSidebarItemOpen, setIsIELTSSidebarItemOpen] = useState(false);
+
+    const handleIELTSSidebarItemClick = () => {
+        setIsIELTSSidebarItemOpen(prev => !prev)
+    }
+
+
     return (
         <>
             {isOpen && (
@@ -43,33 +52,47 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
                 <nav className="mt-4 flex flex-col gap-1 px-4">
 
-                    <SideBarLink to="/" onClick={onClose}>
+                    <SideBarItem to="/" onClick={onClose}>
                         Home
-                    </SideBarLink>
+                    </SideBarItem>
+
+                    <div className='flex items-center w-full px-3 py-2 rounded-lg hover:bg-slate-200 border-b transition-colors'
+                        onClick={handleIELTSSidebarItemClick}>
+                        IELTS {isIELTSSidebarItemOpen ? <LuChevronUp className='ml-auto' /> : <LuChevronDown className='ml-auto' />}
+                    </div>
+                    {isIELTSSidebarItemOpen &&
+                        <div className='flex flex-col items-start text-left text-sm gap-1 px-3 py-2 rounded-lg border-b transition-colors'>
+                            <SideBarItem to="/" onClick={onClose}>Full Test</SideBarItem>
+                            <SideBarItem to="/" onClick={onClose}>Listening</SideBarItem>
+                            <SideBarItem to="/IELTS/Reading" onClick={onClose}>Reading</SideBarItem>
+                            <SideBarItem to="/" onClick={onClose}>Writing</SideBarItem>
+                            <SideBarItem to="/" onClick={onClose}>Speaking</SideBarItem>
+                        </div>
+                    }
 
                     {isAuthenticated ? (
                         <>
-                            <SideBarLink to="/settings" onClick={onClose}>
+                            <SideBarItem to="/settings" onClick={onClose}>
                                 Settings
-                            </SideBarLink>
-                            <SideBarLink to="/login" onClick={logout}>
+                            </SideBarItem>
+                            <SideBarItem to="/login" onClick={logout}>
                                 Log Out
-                            </SideBarLink>
+                            </SideBarItem>
                         </>
                     ) : (
                         <>
-                            <SideBarLink to="/login" onClick={onClose}>
+                            <SideBarItem to="/login" onClick={onClose}>
                                 Log In
-                            </SideBarLink>
-                            <SideBarLink to="/signup" onClick={onClose}>
+                            </SideBarItem>
+                            <SideBarItem to="/signup" onClick={onClose}>
                                 Sign Up
-                            </SideBarLink>
+                            </SideBarItem>
                         </>
                     )}
 
-                    <SideBarLink to="/help" onClick={onClose}>
+                    <SideBarItem to="/help" onClick={onClose}>
                         Help / FAQ
-                    </SideBarLink>
+                    </SideBarItem>
 
                 </nav>
             </aside>
