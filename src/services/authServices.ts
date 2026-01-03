@@ -1,6 +1,6 @@
 import api from '../api/baseApi';
 
-import type { LoginPayload, RegisterPayload, AuthResponse } from '../types/authTypes';
+import type { LoginPayload, RegisterPayload, AuthResponse } from '../types/AuthTypes';
 
 export const login = async (payload: LoginPayload): Promise<AuthResponse> => {
     try {

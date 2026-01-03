@@ -3,7 +3,7 @@ import axios from 'axios';
 const PUBLIC_ENDPOINTS = ['/auth/login', '/auth/register'];
 
 const api = axios.create({
-    baseURL: 'http://localhost:5119/api',
+    baseURL: 'http://localhost:5119/',
     headers: { 'Content-Type': 'application/json' },
     withCredentials: true
 });

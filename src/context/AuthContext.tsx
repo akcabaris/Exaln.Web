@@ -12,9 +12,9 @@ import {
     login as loginApi,
     register as registerApi,
     logout as logoutApi,
-} from "../services/authServices";
+} from "../services/AuthServices";
 
-import type { User, LoginPayload, RegisterPayload } from "../types/authTypes";
+import type { User, LoginPayload, RegisterPayload } from "../types/AuthTypes";
 
 interface AuthContextType {
     user: User | null;
