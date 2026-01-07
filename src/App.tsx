@@ -8,7 +8,8 @@ import SignUpPage from './pages/SignUpPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 import ReadingPracticeList from './pages/IELTS/ReadingPracticeListPage';
-import ReadingPractice from './pages/IELTS/ReadingPracticePage';
+import ReadingPractice from './pages/IELTS/ReadingPracticeInfoPage';
+import ReadingExamPage from './pages/IELTS/ReadingExamPage';
 
 //import ProtectedRoute from './routes/ProtectedRoute';
 import MainLayout from './components/layouts/MainLayout';
@@ -27,10 +28,10 @@ const App: React.FC = () => {
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/IELTS/Reading" element={<ReadingPracticeList />} />
-          <Route path="/IELTS/Reading/Practice/:examId" element={<ReadingPractice />} />
+          <Route path="/IELTS/Reading/Practice/:examID" element={<ReadingPractice />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
-
+        <Route path="/IELTS/Reading/Exam/:examID" element={<ReadingExamPage />} />
         {/*
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}> ... </Route>

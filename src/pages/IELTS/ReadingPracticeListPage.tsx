@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getReadingPractices } from "../../services/IELTSServices";
-import { type IELTSReadingPracticeDTO, EXAM_ATTEMPT_MODULE_STATUS_LABEL } from "../../types/IELTSTypes";
+import { type IELTSReadingPracticeDTO, EXAM_ATTEMPT_MODULE_STATUS_LABEL } from "../../types/IELTSResponseTypes";
 import Spinner from "../../components/Spinner";
 
 export default function ReadingPracticeListPage() {
