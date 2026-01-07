@@ -18,6 +18,7 @@ export default function ReadingExamPage() {
 
     const [sections, setSections] = useState<IELTSReadingSectionDTO[]>([]);
     const [activeSectionIndex, setActiveSectionIndex] = useState(0);
+    const [activeSectionPartIndex, setActiveSectionPartIndex] = useState(0);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -121,6 +122,7 @@ export default function ReadingExamPage() {
     }
 
     const activeSection = sections[activeSectionIndex];
+    const activeSectionPart = sections[activeSectionIndex].sectionParts[activeSectionPartIndex];
 
     return (
         <div className="p-4 space-y-4">
@@ -174,26 +176,33 @@ export default function ReadingExamPage() {
                             </p>
                         ))}
                 </div>
+                {
 
-                <div className="space-y-6">
-                    {activeSection.sectionParts.map(
-                        (part: IELTSReadingSectionPartDTO) => (
-                            <div
-                                key={part.readingSectionPartID}
-                                className="border rounded-md p-4 space-y-3"
+                    <div className="flex gap-2 border-b pb-2">
+                        {activeSection.sectionParts.map((sectionPart, index) => {
+                            const isActive = index === activeSectionPartIndex
+                            return <div
+                                key={sectionPart.readingSectionPartID}
+                                onClick={() => setActiveSectionPartIndex(index)}
+                                className={[
+                                    "px-3 py-1 rounded-md text-sm border transition-colors",
+                                    isActive
+                                        ? "bg-slate-900 text-white border-slate-900"
+                                        : "bg-white text-slate-700 hover:bg-slate-100",
+                                ].join(" ")}
                             >
                                 <div>
-                                    <div className="text-xs font-semibold uppercase text-slate-500">
-                                        Part {part.partNo}
+                                    <div className="">
+                                        Part {sectionPart.partNo}
                                     </div>
-                                    <div className="text-sm font-medium">
-                                        {part.sectionPartExplanation}
+                                    <div className="flex text-xs font-small">
+                                        {sectionPart.questionList[0].questionNo} -{sectionPart.questionList[sectionPart.questionList.length - 1].questionNo} Questions
                                     </div>
                                 </div>
                             </div>
-                        )
-                    )}
-                </div>
+                        })}
+                    </div>
+                }
             </div>
         </div>
     );
