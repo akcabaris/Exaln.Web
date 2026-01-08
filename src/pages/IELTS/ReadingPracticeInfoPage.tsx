@@ -1,14 +1,14 @@
 import { useMemo } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { type IELTSReadingPracticeDTO, EXAM_ATTEMPT_MODULE_STATUS, EXAM_ATTEMPT_MODULE_STATUS_LABEL } from "../../types/IELTSResponseTypes";
+import { type ReadingPractice, EXAM_ATTEMPT_MODULE_STATUS, EXAM_ATTEMPT_MODULE_STATUS_LABEL } from "../../types/IELTSResponseTypes";
 import { IoChevronBackOutline } from "react-icons/io5";
 
 type LocationState = {
-    item?: IELTSReadingPracticeDTO;
+    item?: ReadingPractice;
     examNo: number;
 };
 
-export default function ReadingPracticePage() {
+export default function ReadingPracticeInfoPage() {
     const navigate = useNavigate();
     const { examID } = useParams();
     const location = useLocation();

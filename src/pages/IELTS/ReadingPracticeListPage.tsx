@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getReadingPractices } from "../../services/IELTSServices";
-import { type IELTSReadingPracticeDTO, EXAM_ATTEMPT_MODULE_STATUS_LABEL } from "../../types/IELTSResponseTypes";
+import { type ReadingPractice, EXAM_ATTEMPT_MODULE_STATUS_LABEL } from "../../types/IELTSResponseTypes";
 import Spinner from "../../components/Spinner";
 
 export default function ReadingPracticeListPage() {
     const navigate = useNavigate();
 
-    const [items, setItems] = useState<IELTSReadingPracticeDTO[]>([]);
+    const [items, setItems] = useState<ReadingPractice[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -30,7 +30,7 @@ export default function ReadingPracticeListPage() {
         console.log('i fire once');
     }, []);
 
-    const openPractice = (item: IELTSReadingPracticeDTO, examNo: number) => {
+    const openPractice = (item: ReadingPractice, examNo: number) => {
         navigate(`/IELTS/Reading/Practice/${item.examID}`, { state: { item, examNo } });
     };
 

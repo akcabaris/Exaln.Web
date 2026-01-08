@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { startReadingPractices } from "../../services/IELTSServices";
-import { type IELTSReadingSectionDTO, type IELTSReadingSectionPartDTO, type IELTSReadingQuestionDTO, } from "../../types/IELTSResponseTypes";
+import { startReadingPractices, saveReadingQuestionsAnswer } from "../../services/IELTSServices";
+import { READING_QUESTION_TYPE, type ReadingSection, type ReadingSectionPart, type ReadingQuestion } from "../../types/IELTSResponseTypes";
+import { type SaveReadingQuestionsAnswer } from "../../types/IELTSRequestTypes";
 
 import { IoChevronBackOutline } from "react-icons/io5";
 import Spinner from "../../components/Spinner";
@@ -16,7 +17,8 @@ export default function ReadingExamPage() {
     const location = useLocation();
     const { isTimed = true } = (location.state as LocationState) || {};
 
-    const [sections, setSections] = useState<IELTSReadingSectionDTO[]>([]);
+    const [sections, setSections] = useState<ReadingSection[]>([]);
+    const [examAttemptModuleID, setExamAttemptModuleID] = useState<string>("");
     const [activeSectionIndex, setActiveSectionIndex] = useState(0);
     const [activeSectionPartIndex, setActiveSectionPartIndex] = useState(0);
     const [loading, setLoading] = useState(false);
@@ -42,11 +44,12 @@ export default function ReadingExamPage() {
 
                 console.log("data:", data);
 
-                setSections(data);
+                setSections(data.sections);
+                setExamAttemptModuleID(data.examAttemptModuleID);
 
                 const initialAnswers: Record<number, string> = {};
 
-                data.forEach((section) => {
+                data.sections.forEach((section) => {
                     section.sectionParts.forEach((part) => {
                         part.questionList.forEach((q) => {
                             if (q.usersAnswer) {
@@ -69,14 +72,44 @@ export default function ReadingExamPage() {
     }, [examID]);
 
     const handleAnswerChange = (questionId: number, value: string) => {
+        if (answers[questionId] == value) {
+            return;
+        }
+
         setAnswers(prev => ({
             ...prev,
             [questionId]: value,
         }))
+
+        const payload: SaveReadingQuestionsAnswer = {
+            examAttemptModuleID: examAttemptModuleID,
+            questionID: questionId,
+            usersAnswer: value,
+        };
+
+        saveReadingQuestionsAnswer(payload);
+
     }
 
     const handleBackToList = () => {
         navigate("/IELTS/Reading");
+    }
+
+    const parseQuestionText = (questionText: string) => {
+        const lines = questionText.split('\n').map(l => l.trim()).filter(Boolean);
+
+        const question = lines[0];
+
+        const options = lines.slice(1).map(line => {
+            const [key, ...rest] = line.split('.');
+            return {
+                key: key.trim(),
+                text: rest.join('.').trim()
+            };
+        });
+
+        return { question, options };
+
     }
 
     if (loading) {
@@ -204,6 +237,41 @@ export default function ReadingExamPage() {
                     </div>
                 }
             </div>
+            {
+                <div className="flexx">
+                    {activeSectionPart.questionList.map((questionItem) => {
+                        if (activeSectionPart.questionTypeEnumID !== READING_QUESTION_TYPE.MultipleChoice)
+                            return null;
+
+                        const { question, options } = parseQuestionText(questionItem.questionText);
+                        const selected = answers[questionItem.readingQuestionID];
+
+                        return (
+                            <div key={questionItem.readingQuestionID} className="mb-6">
+                                <p className="font-semibold mb-3">
+                                    {questionItem.questionNo} - {question}
+                                </p>
+                                <div className="space-y-2">
+                                    {options.map(opt => (
+                                        <button
+                                            key={opt.key}
+                                            onClick={() =>
+                                                handleAnswerChange(questionItem.readingQuestionID, opt.key)
+                                            }
+                                            className={` w-full text-left border px-3 py-2 rounded
+                                                ${selected === opt.key
+                                                    ? 'bg-blue-200 border-blue-500'
+                                                    : 'hover:bg-gray-100'}
+                                                    `}>
+                                            <strong>{opt.key}.</strong> {opt.text}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            }
         </div>
     );
 }
